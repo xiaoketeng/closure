@@ -1,0 +1,57 @@
+函数的内部可以直接读取全局变量
+例子：
+var n=100;
+function parent(){
+	console.log(n);
+}
+parent();
+输出：100
+
+函数外部无法读取函数内部的局部变量
+例子：
+function parent(){
+	var m=50;
+}
+parent();
+console.log(m);
+
+函数内部声明变量时一定要加var,否则就声明了一个全局变量
+例子：
+function parent(){
+	m=50;
+}
+parent();
+console.log(m);
+
+
+有时候，需要得到函数内部的局部变量，就需要通过闭包这种方法来获取
+用js变量作用域特点，在函数内部定义一个子函数，对于子函数来说，
+父函数就是它的全局，子函数可以访问父函数里的变量
+（对于整个js代码来说又是局部变量）
+
+例子：
+function parent(){
+	var m=50;
+    function son(){
+		console.log(m);
+    }
+    return son;
+}
+
+var s=parent();
+s();
+
+总结：parent内部所有局部变量对其子函数来说都是可见的，
+但其子函数内的局部变量对其父函数是不可见的，这就是js特有的链式作用域结构
+子对象会一级一级地向上查找所有父对象的变量，父对象的所有变量对子对象都是可见的，反之不可成立。
+
+
+function parent(){
+
+    var m=50;
+    function son(){
+        console.log(m);
+    }
+}
+parent();
+son();//会报函数son未定义------>理由：在js里，在函数里声明的函数都是局部的，函数运行完后就释放了。
